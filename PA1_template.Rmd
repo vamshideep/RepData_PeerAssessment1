@@ -18,27 +18,28 @@ if(!file.exists("./data")){
   }
 activity <- read.csv("./data/activity.csv")
 activity$date <- as.Date(activity$date,"%Y-%m-%d")
+
+
 ```
 
 ## What is mean total number of steps taken per day?
 
-```{r,echo=TRUE}
+```{r totalsteps,echo=TRUE}
 head(activity)
 library(reshape2)
 activitymelt <- melt(activity,id=c("date","interval"),na.rm=TRUE)
 activitydcast <- dcast(activitymelt,date~variable,sum,na.rm=TRUE)
+
 mean(activitydcast$steps)
+
 median(activitydcast$steps)
-str(activitydcast)
-hist(activitydcast$steps)
+
 
 library(ggplot2)
 
-ggplot(activitydcast, aes(x = steps)) + geom_histogram() + labs(x = "Number of Steps taken per day", 
-        y = "Sum") + theme_bw() + theme(legend.position = "bottom")
-steps_per_day <- aggregate(steps ~ date, activity, sum)
-class(steps_per_day)
-head(steps_per_day)
+ggplot(activitydcast, aes(x = steps)) + geom_histogram(binwidth=2000) + labs(x = "Number of Steps taken per day", 
+        y = "Count") 
+
 ```
 
 
@@ -53,14 +54,118 @@ head(activitydcast2,n=5)
 summary(activitydcast2$steps)
 activitydcast2$interval[which.max(activitydcast2$steps)]
 
-steps_pi <- aggregate(activity$steps, by = list(interval = activity$interval), FUN = mean, 
-        na.rm = T)
+ggplot(activitydcast2,aes(x=interval,y=steps))+geom_line()
 
-head(steps_pi)
+
 ```
 
 ## Imputing missing values
 
+```{r}
+head(is.na(activity))
+head(activity[!complete.cases(activity),])
+table(complete.cases(activity))
+table(is.na(activity$steps))
+
+missingindexes <- is.na(activity$steps)
+missingactivity <- (activity[missingindexes,])
+head(activitydcast2)
+
+missing_indices <- which(is.na(activity$steps))
+missing_steps <- unlist(lapply(missing_indices, FUN = function(idx) {
+        interval = activity[idx, ]$interval
+        activitydcast2[activitydcast2$interval == interval, ]$steps
+    }))
+new_steps <- activity$steps
+new_steps[missing_indices] <- missing_steps
+new_activity <- activity
+new_activity$steps <- new_steps
+
+head(activity)
+head(new_activity)
+
+new_activitymelt <- melt(new_activity,id=c("date","interval"),na.rm=TRUE)
+new_activitydcast <- dcast(new_activitymelt,date~variable,sum,na.rm=TRUE)
+mean(new_activitydcast$steps)
+median(new_activitydcast$steps)
+
+ggplot(new_activitydcast, aes(x = steps)) + geom_histogram(binwidth=2000) + labs(x = "Number of Steps taken per day", 
+        y = "Count") 
+
+
+
+```
+
+
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+We do this comparison with the table with filled-in missing values.
+
+1) Augment the table with a column that indicates the day of the week
+2) Subset the table into two parts - weekends (Saturday and Sunday) and weekdays (Monday through Friday).
+3) Tabulate the average steps per interval for each dataset.
+4) Plot the two datasets side by side for comparison.
+
+```{r,echo=TRUE}
+str(activity)
+new_activity$day <- as.factor(weekdays(new_activity$date))
+weekend_activity <- subset(new_activity, day %in% c("Saturday", "Sunday"))
+weekday_activity <- subset(new_activity, !day %in% c("Saturday", "Sunday"))
+
+head(weekend_activity)
+head(weekday_activity)
+str(weekend_activity)
+
+new <- data.frame(weekend_activity$steps,weekend_activity$interval,weekend_activity$date)
+colnames(new) <- c("steps","interval","date")
+
+#weekend_activity$steps <- as.integer(weekend_activity$steps)
+#weekend_activity$interval <- as.numeric(weekend_activity$interval)
+
+weekendmelt <- melt(new,id=c("interval","date"),na.rm=TRUE)
+
+head(weekendmelt)
+tail(weekendmelt)
+str(weekendmelt)
+
+weekendactivitydcast <- dcast(weekendmelt,interval~variable,mean,na.rm=TRUE)
+head(weekendactivitydcast)
+
+newweekday <- data.frame(weekday_activity$steps,weekday_activity$interval,weekday_activity$date)
+colnames(newweekday) <- c("steps","interval","date")
+
+weekdaymelt <- melt(newweekday,id=c("interval","date"),na.rm=TRUE)
+
+head(weekdaymelt)
+tail(weekdaymelt)
+str(weekdaymelt)
+
+weekdayactivitydcast <- dcast(weekdaymelt,interval~variable,mean,na.rm=TRUE)
+head(weekdayactivitydcast)
+
+weekend_spi <- weekendactivitydcast$steps
+weekday_spi <- weekdayactivitydcast$steps
+head(weekend_spi)
+
+
+weekend_spi$dayofweek <- rep("weekend", NROW(weekend_spi))
+weekday_spi$dayofweek <- rep("weekday", NROW(weekday_spi))
+
+
+day_of_week_data <- rbind(weekend_spi, weekday_spi)
+day_of_week_data <- data.frame(day_of_week_data)
+
+day_of_week_data$dayofweek <- as.factor(day_of_week_data$dayofweek)
+data.frame(day_of_week_data)
+
+plot_day_of_week_comparison <- function(dow_data) {
+    ggplot(dow_data, aes(x = interval, y = steps)) + geom_line(color = "steelblue", 
+        size = 1) + facet_wrap(~dayofweek, nrow = 2, ncol = 1) + labs(x = "Interval", 
+        y = "Number of steps") + theme_bw()
+}
+
+plot_day_of_week_comparison(day_of_week_data)
+
+```

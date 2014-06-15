@@ -229,38 +229,461 @@ mean(activitydcast$steps)
 <pre><code>## [1] 10765
 </code></pre>
 
-<pre><code class="r">str(activitydcast)
+<pre><code class="r">library(ggplot2)
+
+ggplot(activitydcast, aes(x = steps)) + geom_histogram(binwidth=2000) + labs(x = &quot;Number of Steps taken per day&quot;, 
+        y = &quot;Count&quot;) 
 </code></pre>
 
-<pre><code>## &#39;data.frame&#39;:    53 obs. of  2 variables:
-##  $ date : Date, format: &quot;2012-10-02&quot; &quot;2012-10-03&quot; ...
-##  $ steps: int  126 11352 12116 13294 15420 11015 12811 9900 10304 17382 ...
-</code></pre>
-
-<pre><code class="r">hist(activitydcast$steps)
-</code></pre>
-
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAAH4CAMAAACR9g9NAAAApVBMVEX9/v0AAAAAADkAAGUAOTkAOWUAOY8AZo8AZrU5AAA5ADk5AGU5OY85ZrU5j485j9plAABlADllAGVlOQBlOY9lZgBlZjllZmVltbVltdpltf2POQCPOTmPOWWPZo+PjzmPj2WPtY+P27WP29qP2/21ZgC1Zjm1jzm1tWW124+1/rW1/tq1/v3ajzna24/a/rXa/tra/v39tWX924/9/rX9/tr9/v1hkl2GAAAAN3RSTlP///////////////////////////////////////////////////////////////////////8AEFmdiwAAAAlwSFlzAAALEgAACxIB0t1+/AAAEApJREFUeJztnQ1/2tYZRyvcubh2Cum6bsNJtjRmXVozB/Hy/T/adHUlkMLFcEHkz9Vzzm+rbRCHm3usFzCg79Zgku/UAwANhDcK4Y1CeKMQ3iiENwrhjUJ4oxDeKIQ3CuGNQnijEN4ohDcK4Y1CeKMQ3iiENwrhjUJ4oxDeKIQ3CuGNQnijEL5jZiP1CI7jasMvxzfP6/Xq8ebZf1cznZwhXdxlg6fgNYW2dT/+h6/ubDm+ne+Xu4WX4yxrLXPWcC9JAuFbF0+zc2Zy763DV3x96avh3cKue5YNj7hDOQmEL78r1tXs5nn16Od1Vnxxm9Ti55s/ihqrx8GvxbqcFxcXa3Se/VBc/lwsVM+6X768tU9XLVleVGvd/UzLatPyhz/dpT+437y8uvE/XHh/k62iObI8u/39p/BwJ+U/5r/+tv5q2dw6EgnvV6XbL34mp5lfscqJ/f7OhXfXvviF5nlWU01utfw2fKXzt8t84jJ87q5fjgdPdfjhrEg2HTz5Jbc3qUc0b41scXf7+2jrbw23+sVr3OaV3cblueLwdTsXpJhRP01u27m4K9Y0V2dxV5Sd+RrD+maunrtBNnGLuMs2y7e2vF5bCNyFfjvt1tFyi+HaVNcs7obut29zV5ubbBSNkZWNR+4eW8MttxPlBmDk/l2TzdVCEglf/lQebhUzmZeVi1Wx/GbpN/VP9Y1c+OG24nq9Xb4Rvl6yOgavwxdLjbY/uG9Wj8WWZLje3NXmJpWiNTK/76hW6e1wS9xWw11U3MPmaiFXHH5nH59V6+y+8OUym/Db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" alt="plot of chunk unnamed-chunk-1"/> </p>
-
-<pre><code class="r">steps_per_day &lt;- aggregate(steps ~ date, activity, sum)
-
-head(steps_per_day)
-</code></pre>
-
-<pre><code>##         date steps
-## 1 2012-10-02   126
-## 2 2012-10-03 11352
-## 3 2012-10-04 12116
-## 4 2012-10-05 13294
-## 5 2012-10-06 15420
-## 6 2012-10-07 11015
-</code></pre>
+<p><img src="data:image/png;base64,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" alt="plot of chunk totalsteps"/> </p>
 
 <h2>What is the average daily activity pattern?</h2>
 
+<pre><code class="r">activitymelt2 &lt;- melt(activity,id=c(&quot;interval&quot;,&quot;date&quot;),na.rm=TRUE)
+
+activitydcast2 &lt;- dcast(activitymelt2,interval~variable,mean)
+
+head(activitydcast2,n=5)
+</code></pre>
+
+<pre><code>##   interval   steps
+## 1        0 1.71698
+## 2        5 0.33962
+## 3       10 0.13208
+## 4       15 0.15094
+## 5       20 0.07547
+</code></pre>
+
+<pre><code class="r">summary(activitydcast2$steps)
+</code></pre>
+
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    0.00    2.49   34.10   37.40   52.80  206.00
+</code></pre>
+
+<pre><code class="r">activitydcast2$interval[which.max(activitydcast2$steps)]
+</code></pre>
+
+<pre><code>## [1] 835
+</code></pre>
+
+<pre><code class="r">ggplot(activitydcast2,aes(x=interval,y=steps))+geom_line()
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-1"/> </p>
+
 <h2>Imputing missing values</h2>
 
+<pre><code class="r">head(is.na(activity))
+</code></pre>
+
+<pre><code>##      steps  date interval
+## [1,]  TRUE FALSE    FALSE
+## [2,]  TRUE FALSE    FALSE
+## [3,]  TRUE FALSE    FALSE
+## [4,]  TRUE FALSE    FALSE
+## [5,]  TRUE FALSE    FALSE
+## [6,]  TRUE FALSE    FALSE
+</code></pre>
+
+<pre><code class="r">head(activity[!complete.cases(activity),])
+</code></pre>
+
+<pre><code>##   steps       date interval
+## 1    NA 2012-10-01        0
+## 2    NA 2012-10-01        5
+## 3    NA 2012-10-01       10
+## 4    NA 2012-10-01       15
+## 5    NA 2012-10-01       20
+## 6    NA 2012-10-01       25
+</code></pre>
+
+<pre><code class="r">table(complete.cases(activity))
+</code></pre>
+
+<pre><code>## 
+## FALSE  TRUE 
+##  2304 15264
+</code></pre>
+
+<pre><code class="r">table(is.na(activity$steps))
+</code></pre>
+
+<pre><code>## 
+## FALSE  TRUE 
+## 15264  2304
+</code></pre>
+
+<pre><code class="r">missingindexes &lt;- is.na(activity$steps)
+missingactivity &lt;- (activity[missingindexes,])
+head(activitydcast2)
+</code></pre>
+
+<pre><code>##   interval   steps
+## 1        0 1.71698
+## 2        5 0.33962
+## 3       10 0.13208
+## 4       15 0.15094
+## 5       20 0.07547
+## 6       25 2.09434
+</code></pre>
+
+<pre><code class="r">missing_indices &lt;- which(is.na(activity$steps))
+missing_steps &lt;- unlist(lapply(missing_indices, FUN = function(idx) {
+        interval = activity[idx, ]$interval
+        activitydcast2[activitydcast2$interval == interval, ]$steps
+    }))
+new_steps &lt;- activity$steps
+new_steps[missing_indices] &lt;- missing_steps
+new_activity &lt;- activity
+new_activity$steps &lt;- new_steps
+
+head(activity)
+</code></pre>
+
+<pre><code>##   steps       date interval
+## 1    NA 2012-10-01        0
+## 2    NA 2012-10-01        5
+## 3    NA 2012-10-01       10
+## 4    NA 2012-10-01       15
+## 5    NA 2012-10-01       20
+## 6    NA 2012-10-01       25
+</code></pre>
+
+<pre><code class="r">head(new_activity)
+</code></pre>
+
+<pre><code>##     steps       date interval
+## 1 1.71698 2012-10-01        0
+## 2 0.33962 2012-10-01        5
+## 3 0.13208 2012-10-01       10
+## 4 0.15094 2012-10-01       15
+## 5 0.07547 2012-10-01       20
+## 6 2.09434 2012-10-01       25
+</code></pre>
+
+<pre><code class="r">new_activitymelt &lt;- melt(new_activity,id=c(&quot;date&quot;,&quot;interval&quot;),na.rm=TRUE)
+new_activitydcast &lt;- dcast(new_activitymelt,date~variable,sum,na.rm=TRUE)
+mean(new_activitydcast$steps)
+</code></pre>
+
+<pre><code>## [1] 10766
+</code></pre>
+
+<pre><code class="r">median(new_activitydcast$steps)
+</code></pre>
+
+<pre><code>## [1] 10766
+</code></pre>
+
+<pre><code class="r">ggplot(new_activitydcast, aes(x = steps)) + geom_histogram(binwidth=2000) + labs(x = &quot;Number of Steps taken per day&quot;, 
+        y = &quot;Count&quot;) 
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-2"/> </p>
+
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
+
+<p>We do this comparison with the table with filled-in missing values.</p>
+
+<p>1) Augment the table with a column that indicates the day of the week
+2) Subset the table into two parts - weekends (Saturday and Sunday) and weekdays (Monday through Friday).
+3) Tabulate the average steps per interval for each dataset.
+4) Plot the two datasets side by side for comparison.</p>
+
+<pre><code class="r">str(activity)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    17568 obs. of  3 variables:
+##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ date    : Date, format: &quot;2012-10-01&quot; &quot;2012-10-01&quot; ...
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+</code></pre>
+
+<pre><code class="r">new_activity$day &lt;- as.factor(weekdays(new_activity$date))
+weekend_activity &lt;- subset(new_activity, day %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))
+weekday_activity &lt;- subset(new_activity, !day %in% c(&quot;Saturday&quot;, &quot;Sunday&quot;))
+
+head(weekend_activity)
+</code></pre>
+
+<pre><code>##      steps       date interval      day
+## 1441     0 2012-10-06        0 Saturday
+## 1442     0 2012-10-06        5 Saturday
+## 1443     0 2012-10-06       10 Saturday
+## 1444     0 2012-10-06       15 Saturday
+## 1445     0 2012-10-06       20 Saturday
+## 1446     0 2012-10-06       25 Saturday
+</code></pre>
+
+<pre><code class="r">head(weekday_activity)
+</code></pre>
+
+<pre><code>##     steps       date interval    day
+## 1 1.71698 2012-10-01        0 Monday
+## 2 0.33962 2012-10-01        5 Monday
+## 3 0.13208 2012-10-01       10 Monday
+## 4 0.15094 2012-10-01       15 Monday
+## 5 0.07547 2012-10-01       20 Monday
+## 6 2.09434 2012-10-01       25 Monday
+</code></pre>
+
+<pre><code class="r">str(weekend_activity)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    4608 obs. of  4 variables:
+##  $ steps   : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ date    : Date, format: &quot;2012-10-06&quot; &quot;2012-10-06&quot; ...
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+##  $ day     : Factor w/ 7 levels &quot;Friday&quot;,&quot;Monday&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+</code></pre>
+
+<pre><code class="r">new &lt;- data.frame(weekend_activity$steps,weekend_activity$interval,weekend_activity$date)
+colnames(new) &lt;- c(&quot;steps&quot;,&quot;interval&quot;,&quot;date&quot;)
+
+#weekend_activity$steps &lt;- as.integer(weekend_activity$steps)
+#weekend_activity$interval &lt;- as.numeric(weekend_activity$interval)
+
+weekendmelt &lt;- melt(new,id=c(&quot;interval&quot;,&quot;date&quot;),na.rm=TRUE)
+
+head(weekendmelt)
+</code></pre>
+
+<pre><code>##   interval       date variable value
+## 1        0 2012-10-06    steps     0
+## 2        5 2012-10-06    steps     0
+## 3       10 2012-10-06    steps     0
+## 4       15 2012-10-06    steps     0
+## 5       20 2012-10-06    steps     0
+## 6       25 2012-10-06    steps     0
+</code></pre>
+
+<pre><code class="r">tail(weekendmelt)
+</code></pre>
+
+<pre><code>##      interval       date variable value
+## 4603     2330 2012-11-25    steps    17
+## 4604     2335 2012-11-25    steps   176
+## 4605     2340 2012-11-25    steps    94
+## 4606     2345 2012-11-25    steps    26
+## 4607     2350 2012-11-25    steps     0
+## 4608     2355 2012-11-25    steps     0
+</code></pre>
+
+<pre><code class="r">str(weekendmelt)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    4608 obs. of  4 variables:
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+##  $ date    : Date, format: &quot;2012-10-06&quot; &quot;2012-10-06&quot; ...
+##  $ variable: Factor w/ 1 level &quot;steps&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ value   : num  0 0 0 0 0 0 0 0 0 0 ...
+</code></pre>
+
+<pre><code class="r">weekendactivitydcast &lt;- dcast(weekendmelt,interval~variable,mean,na.rm=TRUE)
+head(weekendactivitydcast)
+</code></pre>
+
+<pre><code>##   interval    steps
+## 1        0 0.214623
+## 2        5 0.042453
+## 3       10 0.016509
+## 4       15 0.018868
+## 5       20 0.009434
+## 6       25 3.511792
+</code></pre>
+
+<pre><code class="r">newweekday &lt;- data.frame(weekday_activity$steps,weekday_activity$interval,weekday_activity$date)
+colnames(newweekday) &lt;- c(&quot;steps&quot;,&quot;interval&quot;,&quot;date&quot;)
+
+weekdaymelt &lt;- melt(newweekday,id=c(&quot;interval&quot;,&quot;date&quot;),na.rm=TRUE)
+
+head(weekdaymelt)
+</code></pre>
+
+<pre><code>##   interval       date variable   value
+## 1        0 2012-10-01    steps 1.71698
+## 2        5 2012-10-01    steps 0.33962
+## 3       10 2012-10-01    steps 0.13208
+## 4       15 2012-10-01    steps 0.15094
+## 5       20 2012-10-01    steps 0.07547
+## 6       25 2012-10-01    steps 2.09434
+</code></pre>
+
+<pre><code class="r">tail(weekdaymelt)
+</code></pre>
+
+<pre><code>##       interval       date variable  value
+## 12955     2330 2012-11-30    steps 2.6038
+## 12956     2335 2012-11-30    steps 4.6981
+## 12957     2340 2012-11-30    steps 3.3019
+## 12958     2345 2012-11-30    steps 0.6415
+## 12959     2350 2012-11-30    steps 0.2264
+## 12960     2355 2012-11-30    steps 1.0755
+</code></pre>
+
+<pre><code class="r">str(weekdaymelt)
+</code></pre>
+
+<pre><code>## &#39;data.frame&#39;:    12960 obs. of  4 variables:
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+##  $ date    : Date, format: &quot;2012-10-01&quot; &quot;2012-10-01&quot; ...
+##  $ variable: Factor w/ 1 level &quot;steps&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ value   : num  1.717 0.3396 0.1321 0.1509 0.0755 ...
+</code></pre>
+
+<pre><code class="r">weekdayactivitydcast &lt;- dcast(weekdaymelt,interval~variable,mean,na.rm=TRUE)
+head(weekdayactivitydcast)
+</code></pre>
+
+<pre><code>##   interval   steps
+## 1        0 2.25115
+## 2        5 0.44528
+## 3       10 0.17317
+## 4       15 0.19790
+## 5       20 0.09895
+## 6       25 1.59036
+</code></pre>
+
+<pre><code class="r">weekend_spi &lt;- weekendactivitydcast$steps
+weekday_spi &lt;- weekdayactivitydcast$steps
+head(weekend_spi)
+</code></pre>
+
+<pre><code>## [1] 0.214623 0.042453 0.016509 0.018868 0.009434 3.511792
+</code></pre>
+
+<pre><code class="r">weekend_spi$dayofweek &lt;- rep(&quot;weekend&quot;, NROW(weekend_spi))
+</code></pre>
+
+<pre><code>## Warning: Coercing LHS to a list
+</code></pre>
+
+<pre><code class="r">weekday_spi$dayofweek &lt;- rep(&quot;weekday&quot;, NROW(weekday_spi))
+</code></pre>
+
+<pre><code>## Warning: Coercing LHS to a list
+</code></pre>
+
+<pre><code class="r">day_of_week_data &lt;- rbind(weekend_spi, weekday_spi)
+day_of_week_data &lt;- data.frame(day_of_week_data)
+
+day_of_week_data$dayofweek &lt;- as.factor(day_of_week_data$dayofweek)
+</code></pre>
+
+<pre><code>## Error: &#39;x&#39; must be atomic for &#39;sort.list&#39;
+## Have you called &#39;sort&#39; on a list?
+</code></pre>
+
+<pre><code class="r">data.frame(day_of_week_data)
+</code></pre>
+
+<pre><code>##                 V1      V2      V3      V4       V5    V6      V7     V8
+## weekend_spi 0.2146 0.04245 0.01651 0.01887 0.009434 3.512 0.06604 0.1085
+## weekday_spi  2.251  0.4453  0.1732  0.1979  0.09895  1.59  0.6927  1.138
+##             V9   V10     V11     V12     V13     V14     V15     V16 V17
+## weekend_spi  0 0.559 0.03774   0.454 0.04009   2.335 0.01887 0.04245   0
+## weekday_spi  0 1.796  0.3958 0.01761  0.4205 0.09057  0.1979  0.4453   0
+##                V18    V19     V20     V21    V22     V23 V24 V25 V26
+## weekend_spi 0.1392 0.7288  0.5837 0.02123 0.7347 0.03302   0   0   0
+## weekday_spi   1.46  2.222 0.02264  0.2226 0.2503  0.3463   0   0   0
+##                V27 V28 V29     V30 V31    V32 V33 V34    V35    V36 V37
+## weekend_spi 0.3915   0   0 0.01651   0 0.0283   0   0 0.1934 0.1179   0
+## weekday_spi  1.395   0   0  0.1732   0 0.2969   0   0  2.029  1.237   0
+##             V38 V39 V40     V41     V42   V43    V44    V45      V46 V47
+## weekend_spi   0   0   0  0.7134 0.07783 2.703 0.7606 0.6863 0.009434   0
+## weekday_spi   0   0   0 0.02767  0.8164 1.239 0.5224  0.421  0.09895   0
+##             V48    V49    V50   V51 V52     V53    V54   V55    V56   V57
+## weekend_spi   0  3.774 0.1179 3.508   0 0.04245  1.232 6.202  1.895 2.686
+## weekday_spi   0 0.2696  1.237 2.231   0  0.4453 0.0478 3.371 0.2214 3.777
+##                V58   V59    V60 V61    V62   V63   V64    V65   V66    V67
+## weekend_spi 0.6663 5.264  2.202   0 0.1958 0.375 2.406 0.7901 3.683 0.2618
+## weekday_spi 0.8885 2.348 0.7262   0  2.053 3.933 2.188  4.221 2.706  2.746
+##                V68  V69   V70   V71   V72   V73   V74   V75   V76   V77
+## weekend_spi 0.7571 3.69 3.417 8.807 11.37 3.936 6.158 7.909 24.93 10.68
+## weekday_spi  7.941 20.4 23.65 50.35 56.27 41.29 64.59 70.08 77.15 63.93
+##               V78   V79   V80   V81   V82   V83   V84   V85   V86   V87
+## weekend_spi 10.63 11.96 15.04 11.25 14.08 10.11    17 24.73 26.23 18.13
+## weekday_spi 60.03 66.44 47.98 55.67 54.87 47.05 60.43  50.6 50.83 62.02
+##               V88   V89   V90   V91   V92   V93   V94   V95   V96   V97
+## weekend_spi 12.81 12.87 28.12 26.02  16.1 22.85 30.63 30.04 26.83 47.11
+## weekday_spi 69.33  63.1 59.11 66.22 54.35 62.72 83.38 67.74 66.58 82.72
+##               V98   V99  V100  V101  V102  V103  V104  V105  V106  V107
+## weekend_spi 57.65 88.43 88.75 88.39 76.05 116.6 138.1 131.3 162.4 161.4
+## weekday_spi 71.96   144   182 200.6 183.6 198.9 230.4 218.9 185.7 191.2
+##              V108  V109  V110  V111  V112  V113  V114  V115  V116  V117
+## weekend_spi 138.7 75.37 119.1 151.8 166.6 104.2 105.8 87.84 71.59 17.29
+## weekday_spi 177.1 167.7 125.8 93.95  87.3 103.5 92.46 58.52 35.85 27.46
+##              V118  V119  V120  V121  V122  V123  V124  V125  V126  V127
+## weekend_spi 32.84 23.31 30.69 48.13 51.62  51.8 66.27 63.05 94.79 75.66
+## weekday_spi 40.86 39.13 17.63 37.88 18.22 39.08 47.82 30.35 35.15 33.13
+##              V128  V129  V130  V131  V132  V133  V134  V135  V136  V137
+## weekend_spi 74.43 66.15 35.17  33.7 56.37 58.54 42.58 48.42 51.63 40.17
+## weekday_spi 24.26 23.52 25.91 22.03 23.26 21.69 25.09 11.69 16.27 24.18
+##              V138  V139  V140  V141  V142  V143  V144  V145  V146  V147
+## weekend_spi 34.18  35.3 49.37 34.94 35.26 34.57 67.77  86.8 129.5 126.4
+## weekday_spi 23.73 32.77  50.2 44.56 47.92 50.12 56.14 55.72 72.85 83.65
+##              V148  V149  V150  V151  V152  V153  V154  V155  V156  V157
+## weekend_spi   142 104.7 59.58 31.68 37.11 39.32  61.4 79.57 97.35 92.23
+## weekday_spi 75.28 48.72 46.82 62.57 30.74 21.98 29.32 32.79 56.59  24.6
+##              V158  V159  V160  V161  V162  V163  V164  V165  V166  V167
+## weekend_spi 79.67 95.85 112.2 76.09 88.99 73.66 30.27 81.37 91.13 108.5
+## weekday_spi 25.74 24.57 15.64 35.63 44.86 31.77 23.31 25.24 40.18 25.58
+##              V168  V169  V170  V171  V172  V173  V174  V175  V176  V177
+## weekend_spi 129.7 80.59 86.87 75.82 58.96 57.93 56.63 70.98 64.06 32.76
+## weekday_spi 36.33 46.92 39.55 32.12 45.05 27.49 30.76 31.49 14.51 11.55
+##              V178  V179  V180  V181  V182  V183  V184  V185  V186  V187
+## weekend_spi 37.57 48.58 59.22 27.63 38.95 51.06 58.36 63.12 77.03 65.02
+## weekday_spi 21.99 41.86 38.28 30.87 35.05 29.95 31.91 39.86 37.35 42.13
+##              V188  V189  V190  V191  V192  V193  V194  V195  V196  V197
+## weekend_spi 105.8 61.36 106.5 125.1 122.4   105 117.4   125 139.2 141.6
+## weekday_spi 50.93 90.57 95.87 93.95 70.31 46.88  45.2 56.61 36.13 26.81
+##              V198  V199  V200  V201  V202  V203  V204  V205  V206  V207
+## weekend_spi 144.8 103.9 85.63 97.52 83.31 98.46 75.33 111.5 88.23 97.21
+## weekday_spi 29.53 22.52 21.83 25.87 31.99 27.63 32.42 23.57 44.95 34.18
+##              V208  V209  V210  V211  V212  V213  V214  V215  V216  V217
+## weekend_spi 98.22 108.2 97.43 104.9 42.33  53.2 48.56 35.53 37.06 80.15
+## weekday_spi 48.07 60.12 72.37 56.15 65.82 82.88 59.33  34.5 37.59 26.65
+##              V218  V219  V220  V221  V222  V223  V224  V225  V226  V227
+## weekend_spi 90.06 95.71 92.85 53.28 51.78  73.4 53.84 67.42 54.43  45.2
+## weekday_spi 46.62 67.23 82.64 61.39 73.46 79.23  81.5 91.71 115.5 101.3
+##              V228  V229  V230  V231  V232  V233  V234  V235  V236  V237
+## weekend_spi 71.58  77.3 79.54 45.82 50.48 31.92 21.15 22.61 23.25 30.65
+## weekday_spi 90.59 87.56 77.22 62.38 54.38 37.89 20.56  29.1 45.98 30.05
+##              V238  V239  V240  V241  V242  V243  V244  V245  V246  V247
+## weekend_spi 45.13 49.58 51.07 37.14 56.88 54.54 87.42 77.73 64.65  76.6
+## weekday_spi 18.58 44.27 27.29 13.39 5.558 6.823 14.11 8.708 5.712 9.774
+##              V248  V249  V250  V251  V252  V253  V254  V255  V256  V257
+## weekend_spi 61.23 49.32 44.42  50.1 28.14 28.81 12.53 9.244 20.09 7.307
+## weekday_spi 7.156 8.962 13.11 25.97 17.31 11.37  18.9  28.5 18.94 14.28
+##              V258 V259  V260  V261  V262  V263   V264  V265  V266   V267
+## weekend_spi  7.94 19.9 15.73 13.02 8.349 7.767 0.3278 1.244 1.585 0.6014
+## weekday_spi 8.047 12.8 16.51 7.135 7.595 8.262  3.439 1.527 4.424  6.308
+##              V268   V269  V270  V271   V272    V273    V274  V275  V276
+## weekend_spi 1.064 0.8844  2.65 1.219 0.2759   1.103 0.01415 0.763 11.89
+## weekday_spi 11.16  9.277 10.85 12.79  2.894 0.04277  0.1484 1.903 2.014
+##              V277   V278 V279   V280   V281   V282  V283  V284  V285
+## weekend_spi   2.6 0.3561    0 0.1038 0.1203 0.7606 1.388 11.59 6.288
+## weekday_spi 3.551  3.735    0  1.088  1.262  1.878 3.036 2.249  2.24
+##               V286   V287   V288
+## weekend_spi  1.705 0.0283 0.1344
+## weekday_spi 0.2633 0.2969   1.41
+##                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  dayofweek
+## weekend_spi weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend, weekend
+## weekday_spi weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday, weekday
+</code></pre>
+
+<pre><code class="r">plot_day_of_week_comparison &lt;- function(dow_data) {
+    ggplot(dow_data, aes(x = interval, y = steps)) + geom_line(color = &quot;steelblue&quot;, 
+        size = 1) + facet_wrap(~dayofweek, nrow = 2, ncol = 1) + labs(x = &quot;Interval&quot;, 
+        y = &quot;Number of steps&quot;) + theme_bw()
+}
+
+plot_day_of_week_comparison(day_of_week_data)
+</code></pre>
+
+<pre><code>## Error: At least one layer must contain all variables used for facetting
+</code></pre>
 
 </body>
 
