@@ -31,15 +31,33 @@ mean(activitydcast$steps)
 median(activitydcast$steps)
 str(activitydcast)
 hist(activitydcast$steps)
-steps_per_day <- aggregate(steps ~ date, activity, sum)
 
+library(ggplot2)
+
+ggplot(activitydcast, aes(x = steps)) + geom_histogram() + labs(x = "Number of Steps taken per day", 
+        y = "Sum") + theme_bw() + theme(legend.position = "bottom")
+steps_per_day <- aggregate(steps ~ date, activity, sum)
+class(steps_per_day)
 head(steps_per_day)
 ```
 
 
 ## What is the average daily activity pattern?
 
+```{r}
+activitymelt2 <- melt(activity,id=c("interval","date"),na.rm=TRUE)
 
+activitydcast2 <- dcast(activitymelt2,interval~variable,mean)
+
+head(activitydcast2,n=5)
+summary(activitydcast2$steps)
+activitydcast2$interval[which.max(activitydcast2$steps)]
+
+steps_pi <- aggregate(activity$steps, by = list(interval = activity$interval), FUN = mean, 
+        na.rm = T)
+
+head(steps_pi)
+```
 
 ## Imputing missing values
 
