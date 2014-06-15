@@ -2,7 +2,19 @@
 
 
 ## Loading and preprocessing the data
-
+if(!file.exists("./data")){
+  dir.create("./data")
+  fileUrl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+  download.file(fileUrl,dest="./data/activity.zip")
+  unzip("./data/activity.zip",exdir="./data")
+  activity <- read.csv("./data/activity.csv")
+  }
+dim(activity)
+head(activity)
+table(is.na(activity$steps))
+str(activity)
+activity$date
+activity$date <- as.Date(activity$date,"%Y-%m-%d")
 
 
 ## What is mean total number of steps taken per day?
