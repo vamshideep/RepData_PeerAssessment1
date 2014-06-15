@@ -145,25 +145,21 @@ str(weekdaymelt)
 weekdayactivitydcast <- dcast(weekdaymelt,interval~variable,mean,na.rm=TRUE)
 head(weekdayactivitydcast)
 
-weekend_spi <- weekendactivitydcast$steps
-weekday_spi <- weekdayactivitydcast$steps
-head(weekend_spi)
+weekdayactivitydcast$dayofweek <- "weekday"
+weekendactivitydcast$dayofweek <- "weekend"
 
 
-weekend_spi$dayofweek <- rep("weekend", NROW(weekend_spi))
-weekday_spi$dayofweek <- rep("weekday", NROW(weekday_spi))
 
-
-day_of_week_data <- rbind(weekend_spi, weekday_spi)
-day_of_week_data <- data.frame(day_of_week_data)
-
+day_of_week_data <- rbind(weekdayactivitydcast, weekendactivitydcast)
 day_of_week_data$dayofweek <- as.factor(day_of_week_data$dayofweek)
-data.frame(day_of_week_data)
+
+head(day_of_week_data)
+tail(day_of_week_data)
 
 plot_day_of_week_comparison <- function(dow_data) {
     ggplot(dow_data, aes(x = interval, y = steps)) + geom_line(color = "steelblue", 
         size = 1) + facet_wrap(~dayofweek, nrow = 2, ncol = 1) + labs(x = "Interval", 
-        y = "Number of steps") + theme_bw()
+        y = "Number of steps")
 }
 
 plot_day_of_week_comparison(day_of_week_data)
