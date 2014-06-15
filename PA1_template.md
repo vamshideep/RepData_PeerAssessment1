@@ -112,6 +112,7 @@ ggplot(activitydcast2,aes(x=interval,y=steps))+geom_line()
 ![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1.png) 
 
 ## Imputing missing values
+To populate missing values, we choose to replace them with the mean value at the same interval across days. The choice is based on the assumption that activities usually follow a daily pattern.
 
 
 ```r
@@ -241,7 +242,7 @@ ggplot(new_activitydcast, aes(x = steps)) + geom_histogram(binwidth=2000) + labs
 
 ![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2.png) 
 
-
+Comparing with the calculations done in the first section of this document, we observe that while the mean value remains unchanghed, the median value has shifted closer to the mean.
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
